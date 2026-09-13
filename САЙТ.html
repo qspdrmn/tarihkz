@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Қазақстан тарихы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-app: #F8FAFC;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --text-main: #0F172A;
+    --text-sub: #64748B;
+    --border: rgba(226, 232, 240, 0.8);
+    --primary: #0F4C81; 
+    --primary-gradient: linear-gradient(135deg, #0F4C81 0%, #1B65A4 100%);
+    --accent: #D97706; 
+    --accent-gradient: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+    --success: #10B981; 
+    --danger: #EF4444;
+    --opt-bg: rgba(241, 245, 249, 0.8);
+    --opt-hover: #E2E8F0;
+    --textarea-bg: #FFFFFF;
+    --radius: 20px; 
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] {
+    --bg-app: #0F172A;
+    --card-bg: rgba(30, 41, 59, 0.85);
+    --text-main: #F8FAFC;
+    --text-sub: #94A3B8;
+    --border: rgba(51, 65, 85, 0.8);
+    --primary: #38BDF8;
+    --primary-gradient: linear-gradient(135deg, #0284C7 0%, #38BDF8 100%);
+    --accent: #F59E0B;
+    --accent-gradient: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+    --opt-bg: rgba(51, 65, 85, 0.5);
+    --opt-hover: rgba(71, 85, 105, 0.7);
+    --textarea-bg: #1E293B;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; padding: 0; min-height: 100vh; background-color: var(--bg-app); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-main); display: flex; flex-direction: column; overflow-x: hidden; transition: background-color 0.3s ease, color 0.3s ease; }
+
+  .bg-glow { position: fixed; top: -100px; right: -100px; width: 350px; height: 350px; background: radial-gradient(circle, rgba(15, 76, 129, 0.15) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; z-index: -1; animation: floatGlow 8s ease-in-out infinite alternate; }
+  @keyframes floatGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-80px, 60px) scale(1.2); } }
+
+  header.app-header { position: sticky; top: 0; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; z-index: 100; transition: background 0.3s ease; }
+  [data-theme="dark"] header.app-header { background: rgba(15, 23, 42, 0.75); }
+
+  .app-brand { display: flex; align-items: center; gap: 12px; }
+  .app-icon { width: 42px; height: 42px; background: var(--primary-gradient); color: #FFF; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; box-shadow: 0 8px 16px rgba(15, 76, 129, 0.2); transition: transform 0.3s var(--ease-out); }
+  .app-brand:hover .app-icon { transform: rotate(8deg) scale(1.05); }
+  .app-title h1 { font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-main); letter-spacing: -0.02em; }
+  .app-title p { font-size: 0.78rem; margin: 0; color: var(--text-sub); font-weight: 500; }
+
+  .header-controls { display: flex; align-items: center; gap: 8px; }
+
+  .theme-toggle-btn { background: var(--opt-bg); border: 1px solid var(--border); color: var(--text-main); font-size: 0.8rem; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; transition: all 0.25s var(--ease-out); }
+  .theme-toggle-btn:hover { background: var(--opt-hover); }
+
+  .lang-selector { display: flex; background: var(--opt-bg); padding: 4px; border-radius: 10px; gap: 2px; }
+  .lang-btn { border: none; background: transparent; font-size: 0.75rem; font-weight: 700; padding: 6px 10px; border-radius: 8px; color: var(--text-sub); cursor: pointer; transition: all 0.25s var(--ease-out); }
+  .lang-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+  main.app-content { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 20px; padding-bottom: 100px; }
+  .animate-cascade > * { opacity: 0; transform: translateY(16px); animation: cascadeIn 0.5s var(--ease-out) forwards; }
+  .animate-cascade > *:nth-child(1) { animation-delay: 0.05s; } .animate-cascade > *:nth-child(2) { animation-delay: 0.12s; } .animate-cascade > *:nth-child(3) { animation-delay: 0.18s; }
+  @keyframes cascadeIn { to { opacity: 1; transform: translateY(0); } }
+
+  .card { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.02); transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out); position: relative; overflow: hidden; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+  .card h2 { font-size: 1.2rem; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.01em; color: var(--text-main); }
+  .card p.desc { font-size: 0.9rem; color: var(--text-sub); margin: 0 0 16px; line-height: 1.5; }
+
+  .btn-btn { position: relative; overflow: hidden; width: 100%; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 0.92rem; cursor: pointer; transition: transform 0.2s var(--ease-out), box-shadow 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
+  .btn-btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--primary-gradient); color: #FFF; box-shadow: 0 6px 16px rgba(15, 76, 129, 0.25); }
+  .btn-accent { background: var(--accent-gradient); color: #FFF; box-shadow: 0 6px 16px rgba(217, 119, 6, 0.25); }
+  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-main); }
+
+  .opt-btn { width: 100%; text-align: left; background: var(--opt-bg); border: 1px solid var(--border); padding: 14px 16px; border-radius: 12px; margin-bottom: 10px; font-size: 0.92rem; font-weight: 600; color: var(--text-main); cursor: pointer; transition: all 0.25s var(--ease-out); }
+  .opt-btn:hover { background: var(--opt-hover); }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.correct { background: rgba(16, 185, 129, 0.2); border-color: var(--success); color: var(--text-main); animation: popGreen 0.4s var(--ease-out); }
+  .opt-btn.incorrect { background: rgba(239, 68, 68, 0.2); border-color: var(--danger); color: var(--text-main); animation: shakeRed 0.35s ease; }
+
+  @keyframes popGreen { 0% { transform: scale(0.98); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+  @keyframes shakeRed { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+  .progress-bar { width: 100%; height: 6px; background: var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--primary); transition: width 0.3s var(--ease-out); }
+
+  .essay-textarea { width: 100%; height: 260px; border-radius: 14px; border: 1.5px solid var(--border); padding: 14px; font-family: inherit; font-size: 0.95rem; line-height: 1.5; resize: vertical; outline: none; background: var(--textarea-bg); color: var(--text-main); margin-bottom: 12px; transition: border-color 0.2s; }
+  .essay-textarea:focus { border-color: var(--primary); }
+  .timer-badge { background: rgba(239, 68, 68, 0.15); color: var(--danger); font-weight: 800; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; display: inline-block; margin-bottom: 12px; }
+  .input-field { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--textarea-bg); color: var(--text-main); font-family: inherit; font-size: 0.9rem; margin-bottom: 10px; outline: none; }
+
+  nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: center; align-items: center; z-index: 100; transition: background 0.3s ease; }
+  [data-theme="dark"] nav.bottom-nav { background: rgba(15, 23, 42, 0.85); }
+  .nav-container { max-width: 640px; width: 100%; display: flex; justify-content: space-around; }
+  .nav-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-sub); font-size: 0.72rem; font-weight: 700; cursor: pointer; width: 22%; transition: all 0.25s var(--ease-out); }
+  .nav-item svg { width: 22px; height: 22px; fill: currentColor; transition: transform 0.25s var(--ease-out); }
+  .nav-item.active { color: var(--primary); }
+  .nav-item.active svg { transform: translateY(-3px) scale(1.15); }
+</style>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQOHc3XoWNWaPTFTtnwlxjq6UvAduVHK4",
+    authDomain: "tarihkz.firebaseapp.com",
+    projectId: "tarihkz",
+    storageBucket: "tarihkz.firebasestorage.app",
+    messagingSenderId: "1011942319854",
+    appId: "1:1011942319854:web:4f9df7daeb7e76d7cd75ff",
+    measurementId: "G-CX7NDF54B0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.dbSaveScore = async function(userName, score, total, quizTitle) {
+    try {
+      await addDoc(collection(db, "leaderboard"), {
+        name: userName,
+        points: score,
+        scoreText: `${score}/${total}`,
+        quizTitle: quizTitle,
+        timestamp: new Date().toLocaleDateString('kk-KZ', { day: '2-digit', month: '2-digit' })
+      });
+      alert(dict[currentLang].saveSuccess);
+      window.switchTab('leaders');
+    } catch (e) {
+      console.error("Cloud Error: ", e);
+      alert(dict[currentLang].saveError);
+    }
+  };
+
+  window.dbFetchLeaders = async function() {
+    try {
+      const q = query(collection(db, "leaderboard"), orderBy("points", "desc"), limit(20));
+      const querySnapshot = await getDocs(q);
+      const leaders = [];
+      querySnapshot.forEach((doc) => {
+        leaders.push(doc.data());
+      });
+      return leaders;
+    } catch (e) {
+      console.warn("Error fetching leaders:", e);
+      return [];
+    }
+  };
+</script>
+</head>
+<body data-theme="light">
+
+<div class="bg-glow"></div>
+
+<header class="app-header">
+  <div class="app-brand">
+    <div class="app-icon">KZ</div>
+    <div class="app-title">
+      <h1>TarihApp</h1>
+      <p id="sub-title">Қазақстан тарихы</p>
+    </div>
+  </div>
+  <div class="header-controls">
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">Dark</button>
+    <div class="lang-selector">
+      <button class="lang-btn active" onclick="setLang('kz')">KZ</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="app-content animate-cascade" id="app"></main>
+
+<nav class="bottom-nav">
+  <div class="nav-container">
+    <button class="nav-item active" onclick="switchTab('home')" id="nav-home">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span id="label-home">Басты бет</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('tests')" id="nav-tests">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      <span id="label-tests">Тесттер</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('essay')" id="nav-essay">
+      <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+      <span id="label-essay">Эссе</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('leaders')" id="nav-leaders">
+      <svg viewBox="0 0 24 24"><path d="M16 11V3H8v8H2v10h20V11h-6zm-6-6h4v14h-4V5zm-6 8h4v6H4v-6zm16 6h-4v-6h4v6z"/></svg>
+      <span id="label-leaders">Үздіктер</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+let currentLang = 'kz';
+
+const dict = {
+  kz: {
+    subTitle: "Қазақстан тарихы", home: "Басты бет", tests: "Тесттер", essay: "Эссе", leaders: "Үздіктер",
+    welcome: "Сәлем, Оқушы!", welcomeDesc: "Тарихты оқып, эссе жазып, бірінші орынға шық!",
+    startQuizBtn: "Тесттерге өту",
+    topicsHeader: "Силлабус бойынша тест модульдері",
+    start: "Тестті бастау", back: "Артқа", nextQ: "Келесі сұрақ", finishQ: "Тестті аяқтау",
+    result: "Сенің нәтижең", correctAnswers: "Дұрыс жауаптар", restart: "Қайта тапсыру",
+    save: "Нәтижені сақтау", enterNamePrompt: "Есіміңізді енгізіңіз:",
+    essayTitleHeader: "Эссе тақырыбын таңдаңыз",
+    essayTimeDesc: "Уақыты: 1.5 сағат (90 минут)",
+    writeEssayBtn: "Эссе жазу",
+    timerLabel: "Уақыт", namePlaceholder: "Аты-жөніңіз", emailPlaceholder: "Мұғалімнің Email адресі (мысалы: teacher@iitu.edu.kz)",
+    essayTextareaPlaceholder: "Эссеңізді осы жерге жаза бастаңыз...",
+    charCount: "Таңбалар", wordCount: "Сөздер",
+    saveFileBtn: "Компьютерге сақтау (.txt)", sendGmailBtn: "Gmail арқылы мұғалімге жіберу",
+    cancelBtn: "Бас тарту", emptyEssayAlert: "Эссе бос! Текст жазыңыз.",
+    noEmailAlert: "Мұғалімнің email адресін енгізіңіз!",
+    timeUpAlert: "Уақыт аяқталды! 1.5 сағат аяқталды.",
+    saveSuccess: "Нәтиже сәтті сақталды!", saveError: "Деректерді сақтау мүмкін болмады.",
+    leadersTitle: "Үздіктер кестесі", noLeaders: "Әзірге нәтижелер жоқ.", loadingLeaders: "Жүктелуде..."
+  },
+  ru: {
+    subTitle: "История Казахстана", home: "Главная", tests: "Тесты", essay: "Эссе", leaders: "Лидеры",
+    welcome: "Привет, Ученик!", welcomeDesc: "Изучай историю, пиши эссе и занимай первые места!",
+    startQuizBtn: "Перейти к тестам",
+    topicsHeader: "Модули тестирования по силлабусу",
+    start: "Начать тест", back: "Назад", nextQ: "Следующий вопрос", finishQ: "Завершить тест",
+    result: "Твой результат", correctAnswers: "Правильных ответов", restart: "Пройти заново",
+    save: "Сохранить результат", enterNamePrompt: "Введите ваше имя:",
+    essayTitleHeader: "Выберите тему для эссе",
+    essayTimeDesc: "Время на написание: 1.5 часа (90 минут)",
+    writeEssayBtn: "Написать эссе",
+    timerLabel: "Время", namePlaceholder: "Ваше Имя и Фамилия", emailPlaceholder: "Email учителя (например: teacher@iitu.edu.kz)",
+    essayTextareaPlaceholder: "Начните писать ваше эссе здесь...",
+    charCount: "Символов", wordCount: "Слов",
+    saveFileBtn: "Сохранить на компьютер (.txt)", sendGmailBtn: "Отправить учителю через Gmail",
+    cancelBtn: "Отмена", emptyEssayAlert: "Эссе пустое! Напишите текст перед сохранением.",
+    noEmailAlert: "Пожалуйста, укажите email учителя!",
+    timeUpAlert: "Время вышло! Ваше время на написание эссе (1.5 часа) завершилось.",
+    saveSuccess: "Результат успешно сохранен!", saveError: "Не удалось сохранить данные.",
+    leadersTitle: "Таблица лидеров", noLeaders: "Пока нет результатов.", loadingLeaders: "Загрузка..."
+  },
+  en: {
+    subTitle: "History of Kazakhstan", home: "Home", tests: "Tests", essay: "Essay", leaders: "Leaders",
+    welcome: "Hello, Student!", welcomeDesc: "Study history, write essays, and reach the top!",
+    startQuizBtn: "Go to Quizzes",
+    topicsHeader: "Quiz Modules from Syllabus",
+    start: "Start Quiz", back: "Back", nextQ: "Next Question", finishQ: "Finish Quiz",
+    result: "Your Result", correctAnswers: "Correct answers", restart: "Restart",
+    save: "Save Result", enterNamePrompt: "Enter your name:",
+    essayTitleHeader: "Select Essay Topic",
+    essayTimeDesc: "Time limit: 1.5 hours (90 minutes)",
+    writeEssayBtn: "Write Essay",
+    timerLabel: "Time", namePlaceholder: "Your Full Name", emailPlaceholder: "Teacher's Email (e.g. teacher@iitu.edu.kz)",
+    essayTextareaPlaceholder: "Start writing your essay here...",
+    charCount: "Characters", wordCount: "Words",
+    saveFileBtn: "Save to Computer (.txt)", sendGmailBtn: "Send to Teacher via Gmail",
+    cancelBtn: "Cancel", emptyEssayAlert: "Essay is empty! Please write some text.",
+    noEmailAlert: "Please enter teacher's email address!",
+    timeUpAlert: "Time is up! Your 1.5 hours have expired.",
+    saveSuccess: "Result saved successfully!", saveError: "Failed to save data.",
+    leadersTitle: "Leaderboard", noLeaders: "No results yet.", loadingLeaders: "Loading..."
+  }
+};
+
+const ESSAY_TOPICS = [
+  {
+    id: 1,
+    title: {
+      kz: "Ботай мәдениеті және жылқыны қолға үйретудің әлемдік тарихи маңызы",
+      ru: "Ботайская культура и мировое значение доместикации лошади",
+      en: "Botai Culture and Global Significance of Horse Domestication"
+    }
+  },
+  {
+    id: 2,
+    title: {
+      kz: "Сақ және Ғұн тайпалық одақтарының далалық цивилизацияны қалыптастырудағы орны",
+      ru: "Роль сакских и гуннских племенных союзов в формировании степной цивилизации",
+      en: "Role of Saka and Hun Tribal Confederations in Shaping Steppe Civilization"
+    }
+  },
+  {
+    id: 3,
+    title: {
+      kz: "Ұлы Түрік қағанаты және Ұлы Жібек жолы бойындағы қалалық мәдениет",
+      ru: "Великий Тюркский каганат и урбанизация вдоль Великого Шелкового пути",
+      en: "The Great Turkic Khaganate and Urban Culture along the Great Silk Road"
+    }
+  },
+  {
+    id: 4,
+    title: {
+      kz: "Алтын Орда (Жошы Ұлысы) және Ақ Орданың Қазақ мемлекеттілігінің қалыптасуына әсері",
+      ru: "Влияние Золотой Орды (Улуса Джучи) и Белой Орды на становление казахской государственности",
+      en: "Influence of the Golden Horde and White Horde on the Formation of Kazakh Statehood"
+    }
+  },
+  {
+    id: 5,
+    title: {
+      kz: "XV-XVIII ғғ. Қазақ хандығының сыртқы саясаты және «Жеті жарғы» заңдар жинағы",
+      ru: "Внешняя политика Казахского ханства в XV–XVIII вв. и свод законов «Жеты Жаргы»",
+      en: "Foreign Policy of the Kazakh Khanate (15th–18th C.) and the 'Zheti Zhargy' Law Code"
+    }
+  },
+  {
+    id: 6,
+    title: {
+      kz: "XX ғасырдың басындағы «Алаш» қозғалысы мен Алаш-Орда үкіметінің тарихи маңызы",
+      ru: "Историческое значение движения «Алаш» и правительства Алаш-Орды в начале XX века",
+      en: "Historical Significance of the Alash Movement and Alash-Orda Government"
+    }
+  },
+  {
+    id: 7,
+    title: {
+      kz: "Қазақстандағы ұжымдастыру саясаты және 1931-1933 жылдардағы ашаршылық қасіреті",
+      ru: "Политика коллективизации в Казахстане и трагедия голода 1931–1933 годов",
+      en: "Collectivization Policy in Kazakhstan and Famine Tragedy of 1931–1933"
+    }
+  },
+  {
+    id: 8,
+    title: {
+      kz: "1986 жылғы Алматыдағы Желтоқсан оқиғаларының саяси-тарихи бағасы",
+      ru: "Политико-историческая оценка Декабрьских событий 1986 года в Алма-Ате",
+      en: "Political and Historical Assessment of the December 1986 Events in Alma-Ata"
+    }
+  },
+  {
+    id: 9,
+    title: {
+      kz: "Қазақстан Республикасының Тәуелсіздік алуы және көпвекторлы сыртқы саясаты",
+      ru: "Обретение независимости Республики Казахстан и многовекторная внешняя политика",
+      en: "Independence of the Republic of Kazakhstan and Multi-Vector Foreign Policy"
+    }
+  },
+  {
+    id: 10,
+    title: {
+      kz: "«Жаңа Қазақстан»: саяси жаңғыру мен қоғамдық реформалар перспективалары",
+      ru: "«Новый Казахстан»: перспективы политической модернизации и общественных реформ",
+      en: "'New Kazakhstan': Prospects for Political Modernization and Social Reforms"
+    }
+  }
+];
+
+const QUIZZES = [
+  {
+    id: "m1_ancient",
+    title: { 
+      kz: "1-Модуль: Ежелгі Қазақстан және Ботай мәдениеті", 
+      ru: "Модуль 1: Древний Казахстан и Ботайская культура", 
+      en: "Module 1: Prehistoric Kazakhstan & Botai Culture" 
+    },
+    questions: [
+      { q: { kz: "Ботай мәдениетінің әлемдік тарихтағы басты маңызы не?", ru: "В чем главное мировое значение Ботайской культуры?", en: "Main global significance of Botai culture?" }, opts: ["Жылқыны алғаш қолға үйрету", "Темир қорыту", "Әліпби жасау", "Кағаз шығару"], correct: 0 },
+      { q: { kz: "«Алтын адам» қай археологиялық ескерткіштен табылды?", ru: "В каком кургане был найден «Золотой человек»?", en: "Where was the 'Golden Man' discovered?" }, opts: ["Берел", "Иссык курганы", "Отырар", "Шілікті"], correct: 1 },
+      { q: { kz: "Қазақстандағы қола дәуірінің негізгі мәдениеті:", ru: "Основная культура эпохи бронзы в Казахстане:", en: "Main Bronze Age culture in Kazakhstan:" }, opts: ["Сақ", "Андронов мәдениеті", "Отырар-Қаратау", "КельтЕМИНАР"], correct: 1 },
+      { q: { kz: "Палеолит дәуірі қандай кезеңді қамтиды?", ru: "Какой период охватывает палеолит?", en: "What era does Paleolithic cover?" }, opts: ["Ежелгі тас дәуірі", "Жаңа тас дәуірі", "Қола дәуірі", "Темір дәуірі"], correct: 0 },
+      { q: { kz: "Орталық Қазақстандағы соңғы қола дәуірінің мәдениеті:", ru: "Культура поздней бронзы в Центральном Казахстане:", en: "Late Bronze Age culture in Central Kazakhstan:" }, opts: ["Беғазы-Дәндібай", "Ботай", "Тазабағьяб", "Махнанджар"], correct: 0 }
+    ]
+  },
+  {
+    id: "m2_early_iron",
+    title: { 
+      kz: "2-Модуль: Ерте темір дәуірі (Сақтар, Ғұндар, Үйсіндер)", 
+      ru: "Модуль 2: Ранний железный век (Саки, Гунны, Усуни)", 
+      en: "Module 2: Early Iron Age (Saka, Huns, Wusun)" 
+    },
+    questions: [
+      { q: { kz: "Кир II патшаның әскерін талқандаған сақ ханымы:", ru: "Царица саков, победившая Кира II:", en: "Saka queen who defeated Cyrus II:" }, opts: ["Зарина", "Томирис", "Бопай", "Айша-бибі"], correct: 1 },
+      { q: { kz: "Үйсіндердің астанасы болған қала:", ru: "Столица государства Усуней:", en: "Capital city of Wusun:" }, opts: ["Суяб", "Чигучен (Қызыл аңғар)", "Янгикент", "Тараз"], correct: 1 },
+      { q: { kz: "Ғұн империясының негізін қалаған билеуші:", ru: "Основатель империи Хунну (Гуннов):", en: "Founder of Hun Empire:" }, opts: ["Мөде (Модэ)", "Аттила", "Чжичжи", "Лаошан"], correct: 0 },
+      { q: { kz: "Сақтардың өнеріндегі басты стиль:", ru: "Главный стиль в искусстве саков:", en: "Main art style of Saka:" }, opts: ["Геометриялық", "Аң стилі", "Барокко", "Орнаменталды"], correct: 1 },
+      { q: { kz: "Еуропада Ғұн империясын құрған қолбасшы:", ru: "Правитель Гуннов, создавший империю в Европе:", en: "Huns ruler in Europe:" }, opts: ["Чжичжи", "Аттила", "Мөде", "Баламбер"], correct: 1 }
+    ]
+  },
+  {
+    id: "m3_turkic",
+    title: { 
+      kz: "3-Модуль: Түркі кезеңі және Ұлы Жібек жолы", 
+      ru: "Модуль 3: Тюркская эра и Великий Шелковый путь", 
+      en: "Module 3: Turkic Era & Silk Road" 
+    },
+    questions: [
+      { q: { kz: "552 жылы Түрік қағанатын құрған каған:", ru: "Основатель Тюркского каганата в 552 году:", en: "Founder of Turkic Khaganate in 552:" }, opts: ["Бумын қаған", "Муқан қаған", "Тоныкөк", "Білге қаған"], correct: 0 },
+      { q: { kz: "Атлах (Талас) шайқасы қай жылы болды?", ru: "В каком году произошла Атлахская (Таласская) битва?", en: "Year of Battle of Talas?" }, opts: ["602 ж.", "751 ж.", "840 ж.", "1219 ж."], correct: 1 },
+      { q: { kz: "«Диуани лұғат ат-түрк» еңбегінің авторы:", ru: "Автор труда «Диуани лугат ат-тюрк»:", en: "Author of 'Dīwān Lughāt at-Turk':" }, opts: ["Әл-Фараби", "Жүсіп Баласағұни", "Махмұд Қашғари", "Ахмет Ясауи"], correct: 2 },
+      { q: { kz: "Отырарда туған «Әлемнің екінші ұстазы»:", ru: "«Второй учитель мира», родившийся в Отраре:", en: "Scholar born in Otrar known as 'Second Teacher':" }, opts: ["Әл-Фараби", "Ибн Сина", "Улуғбек", "Әл-Бируни"], correct: 0 },
+      { q: { kz: "Қараханид мемлекетінде 960 жылы мемлекеттік дін ретінде қабылданды:", ru: "Государственная религия Караханидов с 960 года:", en: "State religion of Karakhanids from 960:" }, opts: ["Буддизм", "Христиандық", "Ислам", "Тәңіршілдік"], correct: 2 }
+    ]
+  },
+  {
+    id: "m4_golden_horde",
+    title: { 
+      kz: "4-Модуль: Алтын Орда және Қазақ хандығының құрылуы", 
+      ru: "Модуль 4: Золотая Орда и образование Казахского ханства", 
+      en: "Module 4: Golden Horde & Formation of Kazakh Khanate" 
+    },
+    questions: [
+      { q: { kz: "Қазақ хандығының негізі қай жылы қаланды?", ru: "Год основания Казахского ханства?", en: "Foundation year of Kazakh Khanate?" }, opts: ["1465 ж.", "1511 ж.", "1723 ж.", "1361 ж."], correct: 0 },
+      { q: { kz: "Қазақ хандығының алғашқы хандары:", ru: "Первые ханы Казахского ханства:", en: "First khans of Kazakh Khanate:" }, opts: ["Керей мен Жәнібек", "Қасым мен Есім", "Абылай мен Әбілқайыр", "Тәуке мен Жәңгір"], correct: 0 },
+      { q: { kz: "Жошы Ұлысының өзгеше атауы:", ru: "Другое название Улуса Джучи:", en: "Another name for Ulus of Juchi:" }, opts: ["Ақ Орда", "Алтын Орда", "Шағатай ұлысы", "Моғолстан"], correct: 1 },
+      { q: { kz: "«Қасым ханның қасқа жолы» бұл:", ru: "«Қасым ханның қасқа жолы» это:", en: "Law code of Kasym Khan:" }, opts: ["Заңдар жинағы", "Әскери реформа", "Сауда келісімі", "Діни трактат"], correct: 0 },
+      { q: { kz: "Ақ Орданың астанасы болған қала:", ru: "Столица Ак Орды (Белой Орды):", en: "Capital of White Horde:" }, opts: ["Сығанақ", "Сарай-Бату", "Тараз", "Сарайшық"], correct: 0 }
+    ]
+  },
+  {
+    id: "m5_alash_modern",
+    title: { 
+      kz: "5-Модуль: Алаш қозғалысы және XX ғасыр тарихы", 
+      ru: "Модуль 5: Движение Алаш и история XX века", 
+      en: "Module 5: Alash Movement & 20th Century History" 
+    },
+    questions: [
+      { q: { kz: "«Алаш» партиясы мен Алаш-Орда үкіметі қай жылы құрылды?", ru: "Год создания партии «Алаш» и правительства Алаш-Орда?", en: "Year Alash party and government were formed?" }, opts: ["1905 ж.", "1917 ж.", "1920 ж.", "1936 ж."], correct: 1 },
+      { q: { kz: "Алаш-Орда үкіметінің төрағасы:", ru: "Председатель правительства Алаш-Орда:", en: "Head of Alash-Orda government:" }, opts: ["Ахмет Байтұрсынов", "Әлихан Бөкейханов", "Міржақып Дулатов", "Мұстафа Шоқай"], correct: 1 },
+      { q: { kz: "Алматыдағы Желтоқсан оқиғасы қай жылы болды?", ru: "В каком году произошли Декабрьские события в Алма-Ате?", en: "Year of December events in Alma-Ata?" }, opts: ["1979 ж.", "1986 ж.", "1991 ж.", "1989 ж."], correct: 1 },
+      { q: { kz: "Қазақстан Республикасының Мемлекеттік Тәуелсіздігі жарияланған күн:", ru: "Дата провозглашения Независимости Республики Казахстан:", en: "Independence Day of Republic of Kazakhstan:" }, opts: ["1991 ж. 16 желтоқсан", "1990 ж. 25 қазан", "1993 ж. 15 қараша", "1995 ж. 30 тамыз"], correct: 0 },
+      { q: { kz: "Семей ядролық полигоны қашан жабылды?", ru: "В каком году был закрыт Семипалатинский ядерный полигон?", en: "Semipalatinsk nuclear site closed in:" }, opts: ["1989 ж.", "1991 ж.", "1993 ж.", "1995 ж."], correct: 1 }
+    ]
+  }
+];
+
+let activeQuiz = null;
+let currentQIdx = 0;
+let userScore = 0;
+let selectedOpt = null;
+
+let essayTimerInterval = null;
+let essayTimeLeft = 5400; 
+let activeEssayTopic = null;
+
+function toggleTheme() {
+  const body = document.body;
+  const currentTheme = body.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  body.setAttribute('data-theme', newTheme);
+  document.getElementById('theme-btn').innerText = newTheme === 'dark' ? 'Light' : 'Dark';
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('sub-title').innerText = dict[lang].subTitle;
+  document.getElementById('label-home').innerText = dict[lang].home;
+  document.getElementById('label-tests').innerText = dict[lang].tests;
+  document.getElementById('label-essay').innerText = dict[lang].essay;
+  document.getElementById('label-leaders').innerText = dict[lang].leaders;
+  renderHome();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`nav-${tab}`)?.classList.add('active');
+  if (tab === 'home') renderHome();
+  if (tab === 'tests') renderTests();
+  if (tab === 'essay') renderEssayTopics();
+  if (tab === 'leaders') renderLeaders();
+}
+
+function renderHome() {
+  const d = dict[currentLang];
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card">
+      <h2>${d.welcome}</h2>
+      <p class="desc">${d.welcomeDesc}</p>
+      <button class="btn-btn btn-primary" onclick="switchTab('tests')">${d.startQuizBtn}</button>
+    </div>
+  `;
+}
+
+function renderTests() {
+  const d = dict[currentLang];
+  const app = document.getElementById('app');
+  let html = `<h2>${d.topicsHeader}</h2>`;
+  
+  QUIZZES.forEach(q => {
+    html += `
+      <div class="card">
+        <h2>${q.title[currentLang]}</h2>
+        <button class="btn-btn btn-accent" onclick="startQuiz('${q.id}')">${d.start}</button>
+      </div>
+    `;
+  });
+  app.innerHTML = html;
+}
+
+function startQuiz(id) {
+  activeQuiz = QUIZZES.find(q => q.id === id);
+  currentQIdx = 0;
+  userScore = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const d = dict[currentLang];
+  const qData = activeQuiz.questions[currentQIdx];
+  selectedOpt = null;
+  const progress = ((currentQIdx + 1) / activeQuiz.questions.length) * 100;
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card">
+      <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+      <p class="desc">${currentQIdx + 1} / ${activeQuiz.questions.length}</p>
+      <h2>${qData.q[currentLang]}</h2>
+      <div id="opts-container" style="margin-top: 15px;">
+        ${qData.opts.map((opt, i) => `
+          <button class="opt-btn" onclick="selectAnswer(${i})">${opt}</button>
+        `).join('')}
+      </div>
+      <button id="next-btn" class="btn-btn btn-primary" style="margin-top: 15px; display: none;" onclick="nextQuestion()">
+        ${currentQIdx + 1 === activeQuiz.questions.length ? d.finishQ : d.nextQ}
+      </button>
+    </div>
+  `;
+}
+
+function selectAnswer(idx) {
+  if (selectedOpt !== null) return;
+  selectedOpt = idx;
+  const qData = activeQuiz.questions[currentQIdx];
+  const btns = document.querySelectorAll('.opt-btn');
+
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === qData.correct) {
+      btn.classList.add('correct');
+    }
+    if (i === idx && idx !== qData.correct) {
+      btn.classList.add('incorrect');
+    }
+  });
+
+  if (idx === qData.correct) {
+    userScore++;
+  }
+  document.getElementById('next-btn').style.display = 'flex';
+}
+
+function nextQuestion() {
+  currentQIdx++;
+  if (currentQIdx < activeQuiz.questions.length) {
+    renderQuestion();
+  } else {
+    renderResult();
+  }
+}
+
+function renderResult() {
+  const d = dict[currentLang];
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card" style="text-align: center;">
+      <h2>${d.result}</h2>
+      <p style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 15px 0;">
+        ${userScore} / ${activeQuiz.questions.length}
+      </p>
+      <p class="desc">${d.correctAnswers}: ${userScore}</p>
+      <button class="btn-btn btn-primary" onclick="saveScorePrompt()" style="margin-bottom: 10px;">${d.save}</button>
+      <button class="btn-btn btn-outline" onclick="renderTests()">${d.restart}</button>
+    </div>
+  `;
+}
+
+async function saveScorePrompt() {
+  const d = dict[currentLang];
+  const name = prompt(d.enterNamePrompt);
+  if (name && name.trim() !== "") {
+    if (window.dbSaveScore) {
+      await window.dbSaveScore(name.trim(), userScore, activeQuiz.questions.length, activeQuiz.title[currentLang]);
+    } else {
+      alert(d.saveError);
+    }
+  }
+}
+
+function renderEssayTopics() {
+  clearInterval(essayTimerInterval);
+  const d = dict[currentLang];
+  const app = document.getElementById('app');
+  let html = `<h2>${d.essayTitleHeader}</h2>`;
+  
+  ESSAY_TOPICS.forEach(topic => {
+    html += `
+      <div class="card">
+        <h2>${topic.title[currentLang]}</h2>
+        <p class="desc">${d.essayTimeDesc}</p>
+        <button class="btn-btn btn-primary" onclick="startEssay(${topic.id})">${d.writeEssayBtn}</button>
+      </div>
+    `;
+  });
+  app.innerHTML = html;
+}
+
+function startEssay(topicId) {
+  const d = dict[currentLang];
+  activeEssayTopic = ESSAY_TOPICS.find(t => t.id === topicId);
+  essayTimeLeft = 5400; 
+  
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card">
+      <span class="timer-badge" id="essay-timer">${d.timerLabel}: 01:30:00</span>
+      <h2 style="font-size: 1.1rem; margin-bottom: 12px;">${activeEssayTopic.title[currentLang]}</h2>
+      
+      <input type="text" id="student-name" class="input-field" placeholder="${d.namePlaceholder}">
+      <input type="email" id="teacher-email" class="input-field" placeholder="${d.emailPlaceholder}">
+      
+      <textarea id="essay-text" class="essay-textarea" placeholder="${d.essayTextareaPlaceholder}" oninput="updateEssayStats()"></textarea>
+      
+      <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-sub); margin-bottom: 16px;">
+        <span id="char-count">${d.charCount}: 0</span>
+        <span id="word-count">${d.wordCount}: 0</span>
+      </div>
+
+      <button class="btn-btn btn-primary" onclick="downloadEssay()" style="margin-bottom: 10px;">
+        ${d.saveFileBtn}
+      </button>
+      <button class="btn-btn btn-accent" onclick="sendEssayViaGmail()">
+        ${d.sendGmailBtn}
+      </button>
+      <button class="btn-btn btn-outline" onclick="renderEssayTopics()" style="margin-top: 10px;">
+        ${d.cancelBtn}
+      </button>
+    </div>
+  `;
+
+  startEssayTimer();
+}
+
+function startEssayTimer() {
+  const d = dict[currentLang];
+  clearInterval(essayTimerInterval);
+  essayTimerInterval = setInterval(() => {
+    essayTimeLeft--;
+    if (essayTimeLeft <= 0) {
+      clearInterval(essayTimerInterval);
+      alert(d.timeUpAlert);
+    }
+    const timerElem = document.getElementById('essay-timer');
+    if (timerElem) {
+      const h = Math.floor(essayTimeLeft / 3600);
+      const m = Math.floor((essayTimeLeft % 3600) / 60);
+      const s = essayTimeLeft % 60;
+      timerElem.innerText = `${d.timerLabel}: ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+  }, 1000);
+}
+
+function updateEssayStats() {
+  const d = dict[currentLang];
+  const text = document.getElementById('essay-text').value;
+  document.getElementById('char-count').innerText = `${d.charCount}: ${text.length}`;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  document.getElementById('word-count').innerText = `${d.wordCount}: ${words}`;
+}
+
+function downloadEssay() {
+  const d = dict[currentLang];
+  const name = document.getElementById('student-name').value.trim() || "Student";
+  const text = document.getElementById('essay-text').value;
+  if (!text.trim()) {
+    alert(d.emptyEssayAlert);
+    return;
+  }
+  
+  const content = `Student: ${name}\nTopic: ${activeEssayTopic.title[currentLang]}\nDate: ${new Date().toLocaleDateString()}\n\nEssay Text:\n${text}`;
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `Essay_${name.replace(/\s+/g, '_')}.txt`;
+  link.click();
+}
+
+function sendEssayViaGmail() {
+  const d = dict[currentLang];
+  const teacherEmail = document.getElementById('teacher-email').value.trim();
+  const name = document.getElementById('student-name').value.trim() || "Student";
+  const text = document.getElementById('essay-text').value;
+
+  if (!teacherEmail) {
+    alert(d.noEmailAlert);
+    return;
+  }
+  if (!text.trim()) {
+    alert(d.emptyEssayAlert);
+    return;
+  }
+
+  const subject = encodeURIComponent(`Essay HK6002: ${activeEssayTopic.title[currentLang]} (${name})`);
+  const body = encodeURIComponent(`Student: ${name}\nTopic: ${activeEssayTopic.title[currentLang]}\n\nText:\n${text}`);
+  
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${teacherEmail}&su=${subject}&body=${body}`;
+  window.open(gmailUrl, '_blank');
+}
+
+async function renderLeaders() {
+  const d = dict[currentLang];
+  const app = document.getElementById('app');
+  app.innerHTML = `<div class="card"><h2>${d.loadingLeaders}</h2></div>`;
+
+  let leaders = [];
+  if (window.dbFetchLeaders) {
+    leaders = await window.dbFetchLeaders();
+  }
+
+  let html = `<div class="card"><h2>${d.leadersTitle}</h2>`;
+  if (leaders.length === 0) {
+    html += `<p class="desc">${d.noLeaders}</p>`;
+  } else {
+    leaders.forEach((item, index) => {
+      html += `
+        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);">
+          <span><strong>#${index + 1} ${item.name}</strong></span>
+          <span style="color: var(--primary); font-weight: 700;">${item.scoreText || item.points}</span>
+        </div>
+      `;
+    });
+  }
+  html += `</div>`;
+  app.innerHTML = html;
+}
+
+renderHome();
+</script>
+</body>
+</html>
